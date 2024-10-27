@@ -45,7 +45,7 @@ const MailListComponent = () => {
         }
     };
 
-    // Close modal on outside click
+    // Modify useEffect hook to include drawerRef check
     useEffect(() => {
         const handleOutsideClick = (event) => {
             if (
@@ -54,7 +54,9 @@ const MailListComponent = () => {
                 !modalRef.current.contains(event.target) &&
                 !actionButtonRefs.current.some(
                     (ref) => ref && ref.contains(event.target)
-                )
+                ) &&
+                (!drawerRef.current ||
+                    !drawerRef.current.contains(event.target)) // Check if click is outside the drawer
             ) {
                 setIsModalOpen(false); // Close the modal
                 setSelectedMail(null); // Clear selected mail
@@ -113,7 +115,7 @@ const MailListComponent = () => {
                     onSearchChange={handleSearchChange}
                 />
             </div>
-            <HeaderMailList/>
+            <HeaderMailList />
 
             {/* Mail List */}
             {filteredMail.map((mail, index) => {

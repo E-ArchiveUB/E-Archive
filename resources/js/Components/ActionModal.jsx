@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { MdDeleteOutline } from "react-icons/md";
 import { AiOutlineEdit } from "react-icons/ai";
 import { CgArrowsExchange } from "react-icons/cg";
@@ -8,6 +8,8 @@ import DrawerChangeFile from "./DrawerChangeFile";
 const ActionModal = ({ modalRef, modalPosition, currentMailInfo }) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isChangeFileDrawerOpen, setIsChangeFileDrawerOpen] = useState(false);
+
+    const drawerRef = useRef(null); // Ref for the Drawer
 
     const handleEditClick = () => {
         setIsDrawerOpen(true); // Open the edit drawer
@@ -28,7 +30,6 @@ const ActionModal = ({ modalRef, modalPosition, currentMailInfo }) => {
                     <p className="text-sm font-semibold line-clamp-1">
                         {currentMailInfo.fileName}
                     </p>
-                    {/* Display current mail info */}
                     <p className="text-xs">
                         Category: {currentMailInfo.category}
                     </p>
@@ -37,14 +38,14 @@ const ActionModal = ({ modalRef, modalPosition, currentMailInfo }) => {
                 <div className="px-1 py-1 flex flex-col">
                     <button
                         className="flex flex-row justify-start w-full py-2 px-3 gap-4 rounded-md hover:bg-gray-100"
-                        onClick={handleEditClick} // Trigger the edit drawer
+                        onClick={handleEditClick}
                     >
                         <AiOutlineEdit size={18} />
                         <span className="text-sm font-medium">Edit</span>
                     </button>
                     <button
                         className="flex flex-row justify-start w-full py-2 px-3 gap-4 rounded-md hover:bg-gray-100"
-                        onClick={handleChangeFileClick} // Trigger the change file drawer
+                        onClick={handleChangeFileClick}
                     >
                         <CgArrowsExchange size={18} />
                         <span className="text-sm font-medium">Change File</span>
@@ -61,6 +62,7 @@ const ActionModal = ({ modalRef, modalPosition, currentMailInfo }) => {
                 isOpen={isDrawerOpen}
                 onClose={() => setIsDrawerOpen(false)}
                 currentMailInfo={currentMailInfo}
+                drawerRef={drawerRef} // Pass drawerRef here
             />
 
             {/* Drawer Component for changing file */}

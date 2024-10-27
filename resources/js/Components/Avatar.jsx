@@ -4,61 +4,30 @@ import { TbLogout } from "react-icons/tb";
 import { useForm, usePage } from "@inertiajs/react";
 
 const Avatar = () => {
-    const [isTooltipVisible, setIsTooltipVisible] = useState(false);
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const avatarRef = useRef(null);
 
     const { auth } = usePage().props;
-
     const fullName = auth.user?.name || "Guest";
     const role = auth.user?.role || "Guest";
     const firstName = fullName.split(" ")[0];
     const profilePicture =
-        auth.user?.profile_picture || "/Assets/Images/Logo.png";
+        auth.user?.profile_picture || "/Assets/Images/admin_profile.png";
 
-    // Menampilkan dan menyembunyikan tooltip
-    const toggleTooltip = (visible) => {
-        setIsTooltipVisible(visible);
-    };
-
-    // Menampilkan dan menyembunyikan menu dropdown
+    // Toggle menu dropdown
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
-    // Menutup menu jika klik di luar komponen
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (
-                avatarRef.current &&
-                !avatarRef.current.contains(event.target)
-            ) {
-                setIsMenuOpen(false);
-            }
-        };
+    
 
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
-
-    const { post } = useForm();
-    const handleLogout = () => {
-        post(route("logout"));
-    };
+    
 
     return (
-        <div
-            className="group relative inline-block rounded-lg hover:bg-slate-100 p-2 px-4"
-            ref={avatarRef}
-        >
+        <div className="relative inline-block" ref={avatarRef}>
             {/* Avatar */}
             <div
                 onClick={toggleMenu}
-                onMouseEnter={() => toggleTooltip(true)}
-                onMouseLeave={() => toggleTooltip(false)}
-                className="group-hover:cursor-pointer flex items-center"
+                className="flex items-center p-2 px-4 rounded-lg hover:bg-slate-100 cursor-pointer"
             >
                 <img
                     src={profilePicture}
@@ -76,38 +45,7 @@ const Avatar = () => {
                 </span>
             </div>
 
-            {/* Tooltip */}
-            {isTooltipVisible && !isMenuOpen && (
-                <div className="absolute left-0 mt-4 text-xs p-2 w-auto bg-white rounded-md shadow-lg border border-gray-200">
-                    Dimas Fiebry | Owner
-                </div>
-            )}
-
-            {/* Dropdown Menu */}
-            {isMenuOpen && (
-                <div className="absolute right-0 mt-5 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
-                    <div className="p-4 font-bold border-b border-gray-100">
-                        My Account
-                    </div>
-                    <ul className="py-2">
-                        <li className="px-4 py-2 flex justify-between items-center hover:bg-gray-100 cursor-pointer">
-                            <a href="/Admin/ProfileSetting">
-                                <span className="flex gap-4 text-sm items-center">
-                                    <LuSettings size={20} /> Settings
-                                </span>
-                            </a>
-                        </li>
-                        <li
-                            className="px-4 py-2 flex justify-between items-center hover:bg-gray-100 cursor-pointer"
-                            onClick={handleLogout}
-                        >
-                            <span className="flex gap-4 text-sm items-center">
-                                <TbLogout size={20} /> Log out
-                            </span>
-                        </li>
-                    </ul>
-                </div>
-            )}
+            
         </div>
     );
 };

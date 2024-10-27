@@ -1,4 +1,5 @@
 import React from "react";
+import FileUploadComponent from "./FileuploadComponent";
 
 const DrawerChangeFile = ({ isOpen, onClose, currentMailInfo }) => {
     return (
@@ -12,7 +13,7 @@ const DrawerChangeFile = ({ isOpen, onClose, currentMailInfo }) => {
                     <h2 className="text-xl font-semibold tracking-tight">
                         Change File
                     </h2>
-                    <button onClick={onClose} className="text-lg font-bold">
+                    <button onClick={onClose} className="text-lg font-bold pr-8">
                         X
                     </button>
                 </div>
@@ -20,18 +21,14 @@ const DrawerChangeFile = ({ isOpen, onClose, currentMailInfo }) => {
                     Make changes to your file. Click save when you're done.
                 </p>
 
-                <div className="flex flex-col px-10 pl-56 gap-3">
-                    <div className="flex flex-row gap-2 mb-2 items-center">
-                        <label className="text-sm w-24 font-semibold text-right">
-                            File Name
-                        </label>
-                        <input
-                            type="text"
-                            className="border p-2 rounded-md w-full border-black border-opacity-10 text-sm font-medium"
-                            defaultValue={currentMailInfo?.fileName || ""}
-                        />
-                    </div>
+                <div className="flex flex-col px-10 pl-56 pr-96 gap-3 h-56">
+                    <FileUploadComponent />
                 </div>
+            </div>
+            <div className="p-4 pr-14 flex justify-end">
+                <button className="px-4 py-2 bg-customBlue text-white rounded-md">
+                    Save Changes
+                </button>
             </div>
         </div>
     );

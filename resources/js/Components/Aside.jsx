@@ -22,11 +22,7 @@ const Aside = () => {
                         menu={"Dashboard"}
                         path={"/dashboard"}
                     />
-                    <AsideMenu
-                        icon={<FaMailBulk size={20} />}
-                        menu={"Letter Activity"}
-                        path={"/letteractivity"}
-                    />
+                    
 
                     <AsideCategory>Letter Management</AsideCategory>
                     <AsideMenu
@@ -39,18 +35,10 @@ const Aside = () => {
                         menu={"Letter List"}
                         path={"/letterlist"}
                     />
-                    <AsideMenu
-                        icon={<FaTrash size={20} />}
-                        menu={"Trash"}
-                        path={"/trash"}
-                    />
+                    
                 </ul>
                 <ul className="flex flex-col gap-4 pb-8">
-                    <AsideMenu
-                        icon={<IoMdSettings size={20} />}
-                        menu={"Admin Setting"}
-                        path={"/adminmanagement"}
-                    />
+                    
                     <AsideMenu
                         icon={<TbLogout size={20} />}
                         menu={"Logout"}

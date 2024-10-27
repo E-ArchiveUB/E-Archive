@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const DrawerComponent = ({ isOpen, onClose, currentMailInfo }) => {
+const DrawerComponent = ({ isOpen, onClose, currentMailInfo, drawerRef }) => {
     const [categories, setCategories] = useState([
         "Makanan",
         "Minuman",
@@ -42,6 +42,7 @@ const DrawerComponent = ({ isOpen, onClose, currentMailInfo }) => {
             className={`fixed inset-x-0 bottom-0 transform ${
                 isOpen ? "translate-y-0" : "translate-y-full"
             } transition-transform duration-300 ease-in-out bg-white h-[500px] shadow-lg border-t-2 border-gray-200 z-50`}
+            ref={drawerRef}
         >
             <div className="flex flex-col gap-1 p-4">
                 <div className="flex justify-between items-center mb-4">

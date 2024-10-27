@@ -4,12 +4,23 @@ import InputFieldUploadFile from "@/Components/InputFieldUploadFile";
 import FileUploadComponent from "@/Components/FileuploadComponent";
 import InputDateUploadFile from "@/Components/InputDateUploadFile";
 import InputSwitchButton from "@/Components/InputSwitchButton";
-import Toaster from "@/Components/Toaster"; // Import Toaster component
+import Toaster from "@/Components/Toaster";
 
 const FileUpload = () => {
     const [toast, setToast] = useState({ show: false, type: "", message: "" });
 
-    // Function to trigger the toaster
+    // States for category selection
+    const [categories, setCategories] = useState([
+        "Makanan",
+        "Minuman",
+        "Snack",
+        "Obat",
+    ]);
+    const [newCategory, setNewCategory] = useState("");
+    const [isCategoryModalOpen, setCategoryModalOpen] = useState(false);
+    const [isCategoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState("");
+
     const triggerToast = (type, message) => {
         setToast({ show: true, type, message });
         setTimeout(() => {
@@ -18,8 +29,21 @@ const FileUpload = () => {
     };
 
     const handleSave = () => {
-
         triggerToast("success", "File uploaded successfully!");
+    };
+
+    const handleAddCategory = () => {
+        if (newCategory) {
+            setCategories([...categories, newCategory]);
+            setNewCategory("");
+            setCategoryModalOpen(false);
+            setSelectedCategory(newCategory);
+        }
+    };
+
+    const handleCategoryClick = (category) => {
+        setSelectedCategory(category);
+        setCategoryDropdownOpen(false);
     };
 
     return (
@@ -33,7 +57,7 @@ const FileUpload = () => {
                     respective categories.
                 </p>
             </div>
-            <div className="w-3/5 min-h-60 mb-6 ">
+            <div className="w-3/5 min-h-60 mb-6">
                 <FileUploadComponent />
             </div>
             <div className="flex flex-col gap-3">
@@ -52,23 +76,89 @@ const FileUpload = () => {
                     />
                 </div>
                 <div className="grid grid-cols-3 gap-12">
-                    <InputFieldUploadFile
-                        title={"Category"}
-                        placeholder={
-                            "ex: Student Internship Application Letter"
-                        }
-                    />
+                    {/* Updated Category Dropdown */}
+                    <div>
+                        <label className="text-sm font-semibold">
+                            Category
+                        </label>
+                        <div className="relative">
+                            <button
+                                className="border p-2 rounded-md w-full border-black border-opacity-10 text-sm font-medium"
+                                onClick={() =>
+                                    setCategoryDropdownOpen(
+                                        !isCategoryDropdownOpen
+                                    )
+                                }
+                            >
+                                {selectedCategory || "Select Category"}
+                            </button>
+                            {isCategoryDropdownOpen && (
+                                <div className="absolute mt-2 w-full bg-white border rounded-md shadow-lg z-50">
+                                    {categories.map((category) => (
+                                        <div
+                                            key={category}
+                                            className="p-2 hover:bg-gray-100 cursor-pointer"
+                                            onClick={() =>
+                                                handleCategoryClick(category)
+                                            }
+                                        >
+                                            {category}
+                                        </div>
+                                    ))}
+                                    <div
+                                        className="p-2 bg-gray-100 hover:bg-gray-200 cursor-pointer"
+                                        onClick={() => {
+                                            setCategoryModalOpen(true);
+                                            setCategoryDropdownOpen(false);
+                                        }}
+                                    >
+                                        + Add Category
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                        {isCategoryModalOpen && (
+                            <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+                                <div className="bg-white p-6 rounded-md shadow-lg">
+                                    <h2 className="text-lg font-semibold mb-4">
+                                        Add New Category
+                                    </h2>
+                                    <input
+                                        type="text"
+                                        className="border p-2 rounded-md w-full mb-4"
+                                        placeholder="Enter new category"
+                                        value={newCategory}
+                                        onChange={(e) =>
+                                            setNewCategory(e.target.value)
+                                        }
+                                    />
+                                    <div className="flex justify-end gap-2">
+                                        <button
+                                            className="px-4 py-2 bg-gray-300 text-black rounded-md"
+                                            onClick={() =>
+                                                setCategoryModalOpen(false)
+                                            }
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            className="px-4 py-2 bg-customBlue text-white rounded-md"
+                                            onClick={handleAddCategory}
+                                        >
+                                            Add
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                     <InputFieldUploadFile
                         title={"Sender"}
-                        placeholder={
-                            "ex: Student Internship Application Letter"
-                        }
+                        placeholder={"ex: John Doe"}
                     />
                     <InputFieldUploadFile
                         title={"Recipient"}
-                        placeholder={
-                            "ex: Student Internship Application Letter"
-                        }
+                        placeholder={"ex: Jane Doe"}
                     />
                 </div>
                 <div className="grid grid-cols-3 gap-12">
