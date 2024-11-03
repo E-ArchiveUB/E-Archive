@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,13 +28,26 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request)
     {
-        $request->authenticate();
+        // Check if authentication succeeds
+        if (!$request->authenticate()) {
+            // Log an explicit message for debugging purposes
+            \Log::info('Authentication failed. Returning validation error.');
 
+            // Use Inertia's `Inertia::render` to ensure the response is Inertia-compatible
+            return Inertia::render('Auth/Login', [
+                'errors' => [
+                    'login' => 'Invalid username or password. Please try again.',
+                ]
+            ])->withViewData(['errors' => session('errors')]); // Force Inertia to recognize the errors
+
+            // Alternatively, throw a ValidationException if the above doesn't work
+        }
+
+        // Regenerate session and proceed on successful authentication
         $request->session()->regenerate();
-
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('dashboard'));
     }
 
     /**

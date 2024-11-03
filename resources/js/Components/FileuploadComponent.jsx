@@ -1,6 +1,8 @@
+// File: resources/js/Components/FileUploadComponent.jsx
+
 import React, { useState } from "react";
 
-const FileUploadComponent = () => {
+const FileUploadComponent = ({ onFileSelect }) => {
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
     const [dragOver, setDragOver] = useState(false);
@@ -12,10 +14,9 @@ const FileUploadComponent = () => {
         const droppedFile = event.dataTransfer.files[0];
         if (droppedFile) {
             setLoading(true); // Start loading animation
-            setTimeout(() => {
-                setFile(droppedFile); // Simulate file load
-                setLoading(false); // Stop loading after file is processed
-            }, 1000); // Simulated loading delay
+            setFile(droppedFile);
+            onFileSelect(droppedFile); // Pass file to parent
+            setLoading(false); // Stop loading after file is processed
         }
     };
 
@@ -34,16 +35,16 @@ const FileUploadComponent = () => {
         const selectedFile = event.target.files[0];
         if (selectedFile) {
             setLoading(true);
-            setTimeout(() => {
-                setFile(selectedFile);
-                setLoading(false);
-            }, 1000); // Simulate loading delay
+            setFile(selectedFile);
+            onFileSelect(selectedFile); // Pass file to parent
+            setLoading(false);
         }
     };
 
     // Handle file removal
     const handleFileRemove = () => {
         setFile(null);
+        onFileSelect(null); // Clear file in parent as well
     };
 
     return (
@@ -67,8 +68,7 @@ const FileUploadComponent = () => {
                                     Drag & drop or click to choose files
                                 </div>
                                 <div className="text-xs text-gray-500">
-                                    Only accept pdf, docx, xls files - Max file
-                                    size: 10 MB
+                                    Only accept pdf, docx, xls, xlsx files - Max file size: 10 MB
                                 </div>
                             </div>
                         </label>
@@ -76,12 +76,13 @@ const FileUploadComponent = () => {
                             id="file-upload"
                             type="file"
                             className="hidden"
-                            accept="application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel"
+                            accept=".pdf, .doc, .docx, .xls, .xlsx"
                             onChange={handleFileChange}
                         />
                     </>
                 ) : (
                     <div className="flex justify-center items-center h-full">
+                        {/* Simple loading spinner */}
                         <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
                     </div>
                 )}
@@ -91,41 +92,17 @@ const FileUploadComponent = () => {
                 <div className="flex w-full justify-between items-center border rounded p-2 bg-gray-50">
                     <div className="flex items-center">
                         <span className="mr-2 text-customBlue">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={1.5}
-                                stroke="currentColor"
-                                className="w-6 h-6"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M9 12h6M9 16h6m-7 4h8a2 2 0 002-2V6a2 2 0 00-2-2H7a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                />
-                            </svg>
+                            📄 {/* Simple file icon */}
                         </span>
-                        <span className=" line-clamp-1 text-sm text-black text-opacity-80">{file.name}</span>
+                        <span className="line-clamp-1 text-sm text-black text-opacity-80">
+                            {file.name}
+                        </span>
                     </div>
                     <button
                         onClick={handleFileRemove}
                         className="text-customBlue focus:outline-none"
                     >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-6 h-6"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M6 18L18 6M6 6l12 12"
-                            />
-                        </svg>
+                        ❌ {/* Remove icon */}
                     </button>
                 </div>
             ) : (

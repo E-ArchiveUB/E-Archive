@@ -1,27 +1,25 @@
-import React from 'react'
+// File: resources/js/Components/InputFieldUploadFile.jsx
 
-const InputFieldUploadFile = ( {title, placeholder}) => {
+import React from "react";
 
-  return (
-      <div className="flex flex-col gap-1">
-          <label
-              className="text-sm font-medium text-customBlue"
-              htmlFor="Name"
-          >
-              {title}
-          </label>
-          <input
-              style={{
-                  outline: "none",
-                  boxShadow: "none",
-                  WebkitBoxShadow: "none",
-                  MozBoxShadow: "none",
-              }}
-              className="border border-black border-opacity-60 rounded-md py-3 text-sm font-medium placeholder:font-medium placeholder:text-gray-400 bg-white"
-              type="text" placeholder={placeholder}
-          />
-      </div>
-  );
-}
+const InputFieldUploadFile = ({ title, placeholder, value, onChange }) => {
+    console.log(`InputFieldUploadFile ${title}:`, { value }); // Debug log
 
-export default InputFieldUploadFile
+    return (
+        <div className="flex flex-col gap-1">
+            <label className="text-sm font-semibold text-customBlue" htmlFor={title}>
+                {title}
+            </label>
+            <input
+                id={title} // Ensure the label is correctly associated
+                type="text"
+                className="border p-2 rounded-md border-black border-opacity-10 text-sm font-medium"
+                placeholder={placeholder}
+                value={value || ""}
+                onChange={onChange}
+            />
+        </div>
+    );
+};
+
+export default InputFieldUploadFile;

@@ -1,17 +1,18 @@
 import React from "react";
 import AsideMenu from "./AsideMenu";
 import AsideCategory from "./AsideCategory";
-import { MdSpaceDashboard} from "react-icons/md";
-import { FaMailBulk } from "react-icons/fa";
+import { MdSpaceDashboard } from "react-icons/md";
 import { FaFileUpload } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import { FaTrash } from "react-icons/fa";
-import { IoMdSettings } from "react-icons/io";
 import { TbLogout } from "react-icons/tb";
-
-
+import { Inertia } from "@inertiajs/inertia";
 
 const Aside = () => {
+    const handleLogout = (e) => {
+        e.preventDefault();
+        Inertia.post("/logout");
+    };
+
     return (
         <div className="h-full px-4 border-r border-gray-100 w-2/12 bg-white flex flex-col gap-12">
             <nav className="flex flex-col justify-between h-full">
@@ -22,7 +23,6 @@ const Aside = () => {
                         menu={"Dashboard"}
                         path={"/dashboard"}
                     />
-                    
 
                     <AsideCategory>Letter Management</AsideCategory>
                     <AsideMenu
@@ -35,14 +35,12 @@ const Aside = () => {
                         menu={"Letter List"}
                         path={"/letterlist"}
                     />
-                    
                 </ul>
                 <ul className="flex flex-col gap-4 pb-8">
-                    
                     <AsideMenu
                         icon={<TbLogout size={20} />}
                         menu={"Logout"}
-                        path={"/logout"}
+                        onClick={handleLogout}
                     />
                 </ul>
             </nav>

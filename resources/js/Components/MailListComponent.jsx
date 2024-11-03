@@ -1,97 +1,65 @@
-import React, { useState, useRef, useEffect } from "react";
-import { CgEditUnmask } from "react-icons/cg";
-import ActionModal from "./ActionModal"; // Import ActionModal
-import mailInfo from "@/Data/MailInfo"; // Assume this is your mail data
-import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
-import FilterMailType from "./FilterMailType"; // Import FilterMailType
-import FilterMailSearch from "./FilterMailSearch"; // Import FilterMailSearch
-import HeaderMailList from "./HeaderMailList";
+// MailListComponent.jsx
 
-const MailListComponent = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
-    const [modalPosition, setModalPosition] = useState({ top: 10, left: 0 }); // State to track modal position
-    const [selectedMail, setSelectedMail] = useState(null); // State to store selected mail for modal
-    const modalRef = useRef(null); // Ref for the modal
-    const actionButtonRefs = useRef([]); // Array of refs for each action button
+import React, { useState, useRef } from 'react';
+import { CgEditUnmask } from 'react-icons/cg';
+import ActionModal from './ActionModal';
+import { FaArrowTrendUp, FaArrowTrendDown } from 'react-icons/fa6';
+import FilterMailType from './FilterMailType';
+import FilterMailSearch from './FilterMailSearch';
+import HeaderMailList from './HeaderMailList';
 
-    const [activeFilter, setActiveFilter] = useState("all"); // State to track active filter (all, incoming, outgoing)
-    const [searchQuery, setSearchQuery] = useState(""); // State to track search input
+const MailListComponent = ({ mailInfo }) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalPosition, setModalPosition] = useState({ top: 10, left: 0 });
+    const [selectedMail, setSelectedMail] = useState(null);
+    const modalRef = useRef(null);
+    const actionButtonRefs = useRef([]);
 
-    // Function to toggle modal visibility and set its position
+    const [activeFilter, setActiveFilter] = useState("all");
+    const [searchQuery, setSearchQuery] = useState("");
+
     const handleActionClick = (e, mail, index) => {
-        e.stopPropagation(); // Prevent the click from propagating to the document event listener
+        e.stopPropagation();
 
         const rect = e.target.getBoundingClientRect();
         const screenHeight = window.innerHeight;
 
-        // Calculate whether to show modal above or below the button
         const modalTopPosition =
             rect.bottom + 300 > screenHeight
-                ? rect.top + window.scrollY - 300 // Show above if it overflows bottom
-                : rect.bottom + window.scrollY; // Otherwise, show below
+                ? rect.top + window.scrollY - 300
+                : rect.bottom + window.scrollY;
 
         setModalPosition({
             top: modalTopPosition,
             left: rect.left + window.scrollX,
         });
 
-        if (isModalOpen && selectedMail?.id === mail.id) {
-            // Close the modal if it's open and the same mail is clicked
+        // Close any existing modal
+        if (isModalOpen) {
             setIsModalOpen(false);
             setSelectedMail(null);
-        } else {
-            setSelectedMail(mail); // Set the selected mail for editing
-            setIsModalOpen(true); // Open the modal
         }
+
+        // Open the modal for the new mail item
+        setSelectedMail(mail);
+        setIsModalOpen(true);
     };
 
-    // Modify useEffect hook to include drawerRef check
-    useEffect(() => {
-        const handleOutsideClick = (event) => {
-            if (
-                isModalOpen &&
-                modalRef.current &&
-                !modalRef.current.contains(event.target) &&
-                !actionButtonRefs.current.some(
-                    (ref) => ref && ref.contains(event.target)
-                ) &&
-                (!drawerRef.current ||
-                    !drawerRef.current.contains(event.target)) // Check if click is outside the drawer
-            ) {
-                setIsModalOpen(false); // Close the modal
-                setSelectedMail(null); // Clear selected mail
-            }
-        };
+    // Remove handleOutsideClick from MailListComponent
 
-        if (isModalOpen) {
-            document.addEventListener("mousedown", handleOutsideClick);
-        } else {
-            document.removeEventListener("mousedown", handleOutsideClick);
-        }
-
-        return () => {
-            document.removeEventListener("mousedown", handleOutsideClick);
-        };
-    }, [isModalOpen]);
-
-    // Function to handle filter change
     const handleFilterChange = (filter) => {
         setActiveFilter(filter);
     };
 
-    // Function to handle search input change
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
     };
 
-    // Filter and search logic
     const filteredMail = mailInfo.filter((mail) => {
-        // Filter based on activeFilter (all, incoming, outgoing)
         if (activeFilter !== "all" && mail.mailType !== activeFilter) {
             return false;
         }
 
-        // Filter based on searchQuery (fileName)
         if (
             searchQuery &&
             !mail.fileName.toLowerCase().includes(searchQuery.toLowerCase())
@@ -119,7 +87,6 @@ const MailListComponent = () => {
 
             {/* Mail List */}
             {filteredMail.map((mail, index) => {
-                // Determine if the mail is incoming or outgoing
                 const isIncoming = mail.mailType === "incoming";
                 const icon = isIncoming ? (
                     <FaArrowTrendDown />
@@ -188,9 +155,11 @@ const MailListComponent = () => {
             {/* Render modal conditionally */}
             {isModalOpen && selectedMail && (
                 <ActionModal
+                    key={selectedMail.id} // Add key prop
                     modalRef={modalRef}
                     modalPosition={modalPosition}
                     currentMailInfo={selectedMail}
+                    onClose={() => setIsModalOpen(false)}
                 />
             )}
         </>

@@ -1,31 +1,47 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+
+// Landing Page
 
 Route::get('/', function () {
-    return Inertia::render(component: 'LandingPage');
-});
-Route::get('/dashboard', function () {
-    return Inertia::render(component: 'Dashboard');
-});
-Route::get('/fileupload', function () {
-    return Inertia::render(component: 'FileUpload');
-});
-Route::get('/letterlist', function () {
-    return Inertia::render(component: 'LetterList');
+    if (Auth::check()) {
+        // If the user is authenticated, redirect to the dashboard
+        return redirect()->route('dashboard');
+    }
+    // If the user is not authenticated, render the landing page
+    return Inertia\Inertia::render('LandingPage');
 });
 
-// Route::get('/dashboard', function () {
-//     return Inertia::render('Dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+// Protected Routes
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
+    Route::get('/fileupload', function () {
+        return Inertia\Inertia::render('FileUpload');
+    });
 
-// require __DIR__.'/auth.php';
+    // Letter List Route
+    Route::get('/letterlist', [FileController::class, 'index'])->name('letterlist');
+
+    // File CRUD Routes
+    Route::put('/files/{id}', [FileController::class, 'update'])->name('files.update');
+    Route::delete('/files/{id}', [FileController::class, 'destroy'])->name('files.destroy');
+    Route::post('/files/{id}/change-file', [FileController::class, 'changeFile'])->name('files.change-file');
+    Route::post('/change-file/{id}', [FileUploadController::class, 'changeFile']);
+
+
+    // Category Routes
+    Route::post('/add-category', [FileController::class, 'addCategory'])->name('category.add');
+    Route::get('/api/categories', [FileUploadController::class, 'getCategories'])->name('categories.get');
+
+    // File Upload Endpoints (Existing)
+    Route::post('/file-upload', [FileUploadController::class, 'store'])->name('file.upload.store');
+    
+});
+
+// Auth Routes
+require __DIR__ . '/auth.php';
