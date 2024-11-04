@@ -109,7 +109,8 @@ const MailListComponent = ({ mailInfo }) => {
                         </div>
                         <div className="w-full flex flex-row justify-start px-3 h-full min-h-10 items-center bg-blue-100 group-hover:bg-opacity-40 col-span-4">
                             <a
-                                href="/dashboard"
+                                target="_blank"
+                                href={mail.file_url}
                                 className="underline text-xs font-medium"
                             >
                                 {mail.fileName}

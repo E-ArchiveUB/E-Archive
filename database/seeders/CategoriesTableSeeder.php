@@ -9,7 +9,7 @@ class CategoriesTableSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('categories')->insert([
+        $categories = [
             [
                 'id' => 3,
                 'name' => 'Magang',
@@ -76,6 +76,13 @@ class CategoriesTableSeeder extends Seeder
                 'created_at' => '2024-10-13 16:04:10',
                 'updated_at' => '2024-10-13 16:04:10',
             ],
-        ]);
+        ];
+
+        foreach ($categories as $category) {
+            DB::table('categories')->updateOrInsert(
+                ['id' => $category['id']],
+                $category
+            );
+        }
     }
 }

@@ -9,7 +9,7 @@ class FilesTableSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('files')->insert([
+        $files = [
             [
                 'id' => 9,
                 'name' => 'Surat Magang Anak UB',
@@ -17,7 +17,7 @@ class FilesTableSeeder extends Seeder
                 'sender' => 'Universitas Brawijaya',
                 'recipient' => 'CV Tunas Abadi',
                 'category_id' => 3,
-                'file_url' => 'http://example.com/file1.pdf',
+                'file_url' => 'https://res.cloudinary.com/dzvzxvotk/image/upload/v1730635587/kxv0jrv4o8ycwmfbyade.pdf',
                 'upload_date' => '2024-10-09',
                 'mailType' => 'outgoing',
                 'created_at' => '2024-10-10 00:00:00',
@@ -30,7 +30,7 @@ class FilesTableSeeder extends Seeder
                 'sender' => 'PT Jaya Makmur',
                 'recipient' => 'Universitas Brawijaya',
                 'category_id' => 4,
-                'file_url' => 'http://example.com/file2.pdf',
+                'file_url' => 'https://res.cloudinary.com/dzvzxvotk/image/upload/v1730635587/kxv0jrv4o8ycwmfbyade.pdf',
                 'upload_date' => '2024-10-08',
                 'mailType' => 'incoming',
                 'created_at' => '2024-10-10 00:00:00',
@@ -43,7 +43,7 @@ class FilesTableSeeder extends Seeder
                 'sender' => 'PT Sukses Mandiri',
                 'recipient' => 'PT Jaya Makmur',
                 'category_id' => 5,
-                'file_url' => 'http://example.com/file3.pdf',
+                'file_url' => 'https://res.cloudinary.com/dzvzxvotk/image/upload/v1730635587/kxv0jrv4o8ycwmfbyade.pdf',
                 'upload_date' => '2024-10-07',
                 'mailType' => 'incoming',
                 'created_at' => '2024-10-08 00:00:00',
@@ -56,7 +56,7 @@ class FilesTableSeeder extends Seeder
                 'sender' => 'PT Sukses Mandiri',
                 'recipient' => 'PT Jaya Abadi',
                 'category_id' => 10,
-                'file_url' => 'http://example.com/file4.pdf',
+                'file_url' => 'https://res.cloudinary.com/dzvzxvotk/image/upload/v1730635587/kxv0jrv4o8ycwmfbyade.pdf',
                 'upload_date' => '2024-10-02',
                 'mailType' => 'outgoing',
                 'created_at' => '2024-10-05 15:23:02',
@@ -69,7 +69,7 @@ class FilesTableSeeder extends Seeder
                 'sender' => 'PT Maju Sejahtera',
                 'recipient' => 'CV Tunas Abadi',
                 'category_id' => 7,
-                'file_url' => 'http://example.com/file5.pdf',
+                'file_url' => 'https://res.cloudinary.com/dzvzxvotk/image/upload/v1730635587/kxv0jrv4o8ycwmfbyade.pdf',
                 'upload_date' => '2024-10-05',
                 'mailType' => 'incoming',
                 'created_at' => '2024-10-06 00:00:00',
@@ -82,7 +82,7 @@ class FilesTableSeeder extends Seeder
                 'sender' => 'PT Sukses Mandiri',
                 'recipient' => 'PT Jaya Abadi',
                 'category_id' => 10,
-                'file_url' => 'http://example.com/file6.pdf',
+                'file_url' => 'https://res.cloudinary.com/dzvzxvotk/image/upload/v1730635587/kxv0jrv4o8ycwmfbyade.pdf',
                 'upload_date' => '2024-10-02',
                 'mailType' => 'outgoing',
                 'created_at' => '2024-10-05 00:00:00',
@@ -95,7 +95,7 @@ class FilesTableSeeder extends Seeder
                 'sender' => 'PT Jaya Abadi',
                 'recipient' => 'Universitas Brawijaya',
                 'category_id' => 9,
-                'file_url' => 'http://example.com/file7.pdf',
+                'file_url' => 'https://res.cloudinary.com/dzvzxvotk/image/upload/v1730635587/kxv0jrv4o8ycwmfbyade.pdf',
                 'upload_date' => '2024-10-03',
                 'mailType' => 'incoming',
                 'created_at' => '2024-10-04 00:00:00',
@@ -108,7 +108,7 @@ class FilesTableSeeder extends Seeder
                 'sender' => 'PT Tunas Jaya',
                 'recipient' => 'PT Sukses Mandiri',
                 'category_id' => 11,
-                'file_url' => 'http://example.com/file8.pdf',
+                'file_url' => 'https://res.cloudinary.com/dzvzxvotk/image/upload/v1730635587/kxv0jrv4o8ycwmfbyade.pdf',
                 'upload_date' => '2024-10-02',
                 'mailType' => 'outgoing',
                 'created_at' => '2024-10-10 15:22:51',
@@ -121,7 +121,7 @@ class FilesTableSeeder extends Seeder
                 'sender' => 'PT Tunas Jaya',
                 'recipient' => 'PT Sukses Mandiri',
                 'category_id' => 11,
-                'file_url' => 'http://example.com/file9.pdf',
+                'file_url' => 'https://res.cloudinary.com/dzvzxvotk/image/upload/v1730635587/kxv0jrv4o8ycwmfbyade.pdf',
                 'upload_date' => '2024-10-02',
                 'mailType' => 'incoming',
                 'created_at' => '2024-10-04 00:00:00',
@@ -134,12 +134,18 @@ class FilesTableSeeder extends Seeder
                 'sender' => 'Universitas Brawijaya',
                 'recipient' => 'PT Jaya Makmur',
                 'category_id' => 12,
-                'file_url' => 'http://example.com/file10.pdf',
+                'file_url' => 'https://res.cloudinary.com/dzvzxvotk/image/upload/v1730635587/kxv0jrv4o8ycwmfbyade.pdf',
                 'upload_date' => '2024-09-30',
                 'mailType' => 'incoming',
                 'created_at' => '2024-10-01 00:00:00',
                 'updated_at' => '2024-10-02 00:00:00',
             ],
-        ]);
+        ];
+        foreach ($files as $file) {
+            DB::table('files')->updateOrInsert(
+                ['id' => $file['id']],
+                $file
+            );
+        }
     }
 }
