@@ -63,6 +63,7 @@ const DrawerChangeFile = ({ isOpen, onClose, currentMailInfo, drawerRef, trigger
             // Display success toast
             triggerToast('success', 'File changed successfully.');
             onClose();
+            window.location.reload();
         } catch (err) {
             console.error("File change failed:", err.response?.data);
             setError(
